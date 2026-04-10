@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using System.Data.Common;
 
 public class sys : MonoBehaviour
 {
@@ -52,27 +51,30 @@ public class sys : MonoBehaviour
             cards_list.Remove(cards_list[rand]);
         }
 
-        for(int k = 0; k < cards_shuffled.Length; k++)
-        {
-            card_display.text += cards_shuffled[k] + ", ";
-        }
+        
         StartCoroutine(StartGame());
     }
 
     IEnumerator StartGame()
     {
-        // wait until players join
-        player1.isHere = true;
-        player2.isHere = true;
-        int i;
-        for (i = 0; i < 3;i++)
+       // yield return new WaitUntil(() => player1.isHere && player2.isHere);
+
+        int i, cardRef = 0;
+        for (i = 0; i < 5;i += 2)
         {
-            player1.cards[i] = cards_shuffled[i];
-            player1Hand.text += player1.cards[i] + " ";
+            player1.cards[cardRef] = cards_shuffled[i];
+            cards_shuffled[i] = "ff";
+            player1Hand.text += player1.cards[cardRef] + " ";
             yield return new WaitForSeconds(0.5f);
-            player2.cards[i] = cards_shuffled[i+1];
-            player2Hand.text += player2.cards[i] + " ";
+            player2.cards[cardRef] = cards_shuffled[i+1];
+            cards_shuffled[i+1] = "ff";
+            player2Hand.text += player2.cards[cardRef] + " ";
             yield return new WaitForSeconds(1f);
+            cardRef++;
+        }
+        for(int k = 0; k < cards_shuffled.Length; k++)
+        {
+            card_display.text += cards_shuffled[k] + ", ";
         }
         
         yield return null;
