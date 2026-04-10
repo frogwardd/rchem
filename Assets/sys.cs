@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using System.Data.Common;
 
 public class sys : MonoBehaviour
 {
@@ -12,14 +13,15 @@ public class sys : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI card_display, player1Hand, player2Hand;
 
-    struct player
+    public class player
     {
         public bool isHere;
         public int score;
-        public string[] cards;
+        public string[] cards = new string[3];
     }
 
-    player player1, player2;
+    player player1 = new player(), player2 = new player();
+    
     void Start(){
         StartCoroutine(fillAndShuffle());
     }
@@ -63,7 +65,7 @@ public class sys : MonoBehaviour
         player1.isHere = true;
         player2.isHere = true;
         int i;
-        for (i = 0; i < 5;i++)
+        for (i = 0; i < 3;i++)
         {
             player1.cards[i] = cards_shuffled[i];
             player1Hand.text += player1.cards[i] + " ";
