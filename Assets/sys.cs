@@ -6,10 +6,12 @@ using TMPro;
 
 public class sys : MonoBehaviour
 {
-    public string[] cards,cards_shuffled = new string[40];
+    public string[] cards = {"1o" ,"2o" ,"3o" ,"4o" ,"5o" ,"6o" ,"7o" ,"8o" ,"9o" ,"10o" 
+                            ,"1c" ,"2c" ,"3c" ,"4c" ,"5c" ,"6c" ,"7c" ,"8c" ,"9c" ,"10c" 
+                            ,"1e" ,"2e" ,"3e" ,"4e" ,"5e" ,"6e" ,"7e" ,"8e" ,"9e" ,"10e" 
+                            ,"1b" ,"2b" ,"3b" ,"4b" ,"5b" ,"6b" ,"7b" ,"8b" ,"9b" ,"10b"};
 
-    char[] signs = {'o','c','e','b'};
-
+    public List<string> shuffled;
     [SerializeField] TextMeshProUGUI card_display, player1Hand, player2Hand;
 
     public class player
@@ -31,26 +33,19 @@ public class sys : MonoBehaviour
 
     IEnumerator fillAndShuffle()
     {
-        // fill the cards appropriately
-        int indicator = 0;
-        for(int i = 0; i<4;i++){
-            for(int j=1;j<11;j++){
-                cards[indicator] += j.ToString() + signs[i];
-                indicator++;
-                yield return null;
-            }
-            yield return null;
+        for(int k = 0; k < cards.Length; k++)
+        {
+            card_display.text += cards[k] + ", ";
         }
-        
         // shuffle the cards and store them in "cards_shuffled"
         List<string> cards_list = cards.ToList();
         for(int t = 0; t < cards.Length; t++)
         {
             int rand = Random.Range(0,cards_list.Count());
-            cards_shuffled[t] = cards_list[rand];
+            shuffled.Add(cards_list[rand]);
             cards_list.Remove(cards_list[rand]);
         }
-
+        yield return null;
         
         StartCoroutine(StartGame());
     }
@@ -59,22 +54,23 @@ public class sys : MonoBehaviour
     {
        // yield return new WaitUntil(() => player1.isHere && player2.isHere);
 
-        int i, cardRef = 0;
-        for (i = 0; i < 5;i += 2)
+        int cardRef = 0;
+        while(cardRef < 3)
         {
-            player1.cards[cardRef] = cards_shuffled[i];
-            cards_shuffled[i] = "ff";
+            player1.cards[cardRef] = shuffled[0];
             player1Hand.text += player1.cards[cardRef] + " ";
+            shuffled.RemoveAt(0);
             yield return new WaitForSeconds(0.5f);
-            player2.cards[cardRef] = cards_shuffled[i+1];
-            cards_shuffled[i+1] = "ff";
+            player2.cards[cardRef] = shuffled[0];
             player2Hand.text += player2.cards[cardRef] + " ";
+            shuffled.RemoveAt(0);
             yield return new WaitForSeconds(1f);
             cardRef++;
+            
         }
-        for(int k = 0; k < cards_shuffled.Length; k++)
+        for(int k = 0; k < shuffled.Count(); k++)
         {
-            card_display.text += cards_shuffled[k] + ", ";
+            card_display.text += shuffled[k] + ", ";
         }
         
         yield return null;
