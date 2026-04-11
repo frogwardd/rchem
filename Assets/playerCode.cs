@@ -23,10 +23,10 @@ public class playerCode : MonoBehaviour
 
     public IEnumerator cardArt()
     {
-        rotY = 0;
+        rotY = 180;
         faceDown = true;
         StartCoroutine(rotate());
-        yield return new WaitUntil(() => card[0].transform.rotation.y > 90);
+        yield return new WaitUntil(() => rotY <= 90);
         for (int i = 0; i < 3; i++)
         {
             int cardIntInArray = 0;
@@ -68,10 +68,10 @@ public class playerCode : MonoBehaviour
     {
         while (transform.rotation.y >= 0)
         {
-            rotY = math.min(transform.rotation.y + 180 * Time.deltaTime, 180);
-            card[0].transform.Rotate(Vector3.up * rotY);
-            card[1].transform.Rotate(Vector3.up * rotY);
-            card[2].transform.Rotate(Vector3.up * rotY);
+            rotY = math.max(rotY - 180 * Time.deltaTime, 0);
+            card[0].transform.rotation = Quaternion.Euler(0, rotY, 0);
+            card[1].transform.rotation = Quaternion.Euler(0, rotY, 0);
+            card[2].transform.rotation = Quaternion.Euler(0, rotY, 0);
             yield return null;
         }
         
