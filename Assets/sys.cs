@@ -13,7 +13,7 @@ public class sys : MonoBehaviour
 
     public List<string> shuffled;
     [SerializeField] TextMeshProUGUI card_display, player1Hand, player2Hand;
-
+    [SerializeField] playerCode playercode;
     public class player
     {
         public bool isHere;
@@ -21,7 +21,7 @@ public class sys : MonoBehaviour
         public string[] cards = new string[3];
     }
 
-    player player1 = new player(), player2 = new player();
+    public player player1 = new player(), player2 = new player();
     
     void Start(){
         StartCoroutine(fillAndShuffle());
@@ -73,6 +73,7 @@ public class sys : MonoBehaviour
             card_display.text += shuffled[k] + ", ";
         }
         
+        StartCoroutine(playercode.cardArt());
         yield return null;
     }
 }
