@@ -21,7 +21,7 @@ public class sys : MonoBehaviour
         public string[] cards = new string[3];
     }
 
-    public player player1 = new player(), player2 = new player();
+    public player player1 = new player(), CPU = new player();
     
     void Start(){
         StartCoroutine(fillAndShuffle());
@@ -61,8 +61,8 @@ public class sys : MonoBehaviour
             player1Hand.text += player1.cards[cardRef] + " ";
             shuffled.RemoveAt(0);
             yield return new WaitForSeconds(0.5f);
-            player2.cards[cardRef] = shuffled[0];
-            player2Hand.text += player2.cards[cardRef] + " ";
+            CPU.cards[cardRef] = shuffled[0];
+            player2Hand.text += CPU.cards[cardRef] + " ";
             shuffled.RemoveAt(0);
             yield return new WaitForSeconds(1f);
             cardRef++;

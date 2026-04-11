@@ -6,7 +6,7 @@ using UnityEngine;
 public class playerCode : MonoBehaviour
 {
     [SerializeField] sys system;
-    [SerializeField] SpriteRenderer[] card;
+    public SpriteRenderer[] card;
     [SerializeField] Sprite[] deck;
 
     bool faceDown = false;
