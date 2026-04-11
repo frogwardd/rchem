@@ -12,8 +12,7 @@ public class sys : MonoBehaviour
                             ,"1b" ,"2b" ,"3b" ,"4b" ,"5b" ,"6b" ,"7b" ,"8b" ,"9b" ,"10b"};
 
     public List<string> shuffled;
-    [SerializeField] TextMeshProUGUI card_display, player1Hand, player2Hand;
-    [SerializeField] playerCode playercode;
+    [SerializeField] deckAnim deckAnim;
     public class player
     {
         public bool isHere;
@@ -24,19 +23,15 @@ public class sys : MonoBehaviour
     public player player1 = new player(), CPU = new player();
     
     void Start(){
-        StartCoroutine(fillAndShuffle());
+        StartCoroutine(Shuffle());
     }
     void Update()
     {
         
     }
 
-    IEnumerator fillAndShuffle()
+    IEnumerator Shuffle()
     {
-        for(int k = 0; k < cards.Length; k++)
-        {
-            card_display.text += cards[k] + ", ";
-        }
         // shuffle the cards and store them in "cards_shuffled"
         List<string> cards_list = cards.ToList();
         for(int t = 0; t < cards.Length; t++)
@@ -44,8 +39,9 @@ public class sys : MonoBehaviour
             int rand = Random.Range(0,cards_list.Count());
             shuffled.Add(cards_list[rand]);
             cards_list.Remove(cards_list[rand]);
+            yield return null;
         }
-        yield return null;
+        
         
         StartCoroutine(StartGame());
     }
@@ -58,22 +54,12 @@ public class sys : MonoBehaviour
         while(cardRef < 3)
         {
             player1.cards[cardRef] = shuffled[0];
-            player1Hand.text += player1.cards[cardRef] + " ";
             shuffled.RemoveAt(0);
-            yield return new WaitForSeconds(0.5f);
             CPU.cards[cardRef] = shuffled[0];
-            player2Hand.text += CPU.cards[cardRef] + " ";
             shuffled.RemoveAt(0);
-            yield return new WaitForSeconds(1f);
             cardRef++;
-            
+            yield return null;
         }
-        for(int k = 0; k < shuffled.Count(); k++)
-        {
-            card_display.text += shuffled[k] + ", ";
-        }
-        
-        StartCoroutine(playercode.cardArt());
-        yield return null;
+        StartCoroutine(deckAnim.animPlayers());
     }
 }

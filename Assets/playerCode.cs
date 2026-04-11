@@ -8,6 +8,7 @@ public class playerCode : MonoBehaviour
     [SerializeField] sys system;
     public SpriteRenderer[] card;
     [SerializeField] Sprite[] deck;
+    [SerializeField] deckAnim deckAnim;
 
     bool faceDown = false;
     float rotY;
@@ -68,7 +69,7 @@ public class playerCode : MonoBehaviour
     {
         while (transform.rotation.y >= 0)
         {
-            rotY = math.max(rotY - 180 * Time.deltaTime, 0);
+            rotY = math.max(rotY - 360 * Time.deltaTime, 0);
             card[0].transform.rotation = Quaternion.Euler(0, rotY, 0);
             card[1].transform.rotation = Quaternion.Euler(0, rotY, 0);
             card[2].transform.rotation = Quaternion.Euler(0, rotY, 0);

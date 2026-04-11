@@ -1,5 +1,5 @@
 using System.Collections;
-using Unity.VisualScripting;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class deckAnim : MonoBehaviour
@@ -9,34 +9,40 @@ public class deckAnim : MonoBehaviour
     [SerializeField] GameObject cardTemplate;
     void Start()
     {
-        StartCoroutine(animPlayers());
+
     }
-    IEnumerator animPlayers()
+    public IEnumerator animPlayers()
     {
+        GameObject card = Instantiate(cardTemplate, transform.parent);
+        Vector3 dir;
         for (int i = 0; i < 3; i++)
         {
-            GameObject card = Instantiate(cardTemplate, transform.parent);
-            Vector3 dir = (player.card[i].transform.position - card.transform.position).normalized;
-            while(card.transform.position.x <= player.card[i].transform.position.x)
+            
+            dir = (player.card[i].transform.position - card.transform.position).normalized;
+            while(card.transform.position.x != player.card[i].transform.position.x)
             {
-                card.transform.Translate(dir * 50 * Time.deltaTime);
+                Vector2 move = new Vector2(math.min(card.transform.position.x + dir.x * 50 * Time.deltaTime,player.card[i].transform.position.x),math.max(card.transform.position.y + dir.y * 50 * Time.deltaTime,player.card[i].transform.position.y));
+                card.transform.position = move;
                 yield return null;
             }
-            player.card[i].enabled = true;
             card.transform.position = transform.position;
+            player.card[i].enabled = true;
+            
 
             yield return new WaitForSeconds(0.5f);
             dir = (cpu.card[i].transform.position - card.transform.position).normalized;
-            while(card.transform.position.x <= cpu.card[i].transform.position.x)
+            
+            while(card.transform.position.x != cpu.card[i].transform.position.x)
             {
-                card.transform.Translate(dir * 50 * Time.deltaTime);
+                Vector2 move = new Vector2(math.min(card.transform.position.x + dir.x * 50 * Time.deltaTime,cpu.card[i].transform.position.x),math.min(card.transform.position.y + dir.y * 50 * Time.deltaTime,cpu.card[i].transform.position.y));
+                card.transform.position = move;
                 yield return null;
             }
-            cpu.card[i].enabled = true;
             card.transform.position = transform.position;
+            cpu.card[i].enabled = true;
+            
             yield return new WaitForSeconds(0.5f);
         }
-        
-        
+        StartCoroutine(player.cardArt());
     }
 }
