@@ -7,6 +7,7 @@ public class playerCode : MonoBehaviour
 {
     [SerializeField] sys system;
     public SpriteRenderer[] card;
+    public Transform[] cardTransform;
     [SerializeField] Sprite[] deck;
     [SerializeField] deckAnim deckAnim;
 
@@ -31,7 +32,16 @@ public class playerCode : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             int cardIntInArray = 0;
-            Debug.Log(cardIntInArray);
+            
+            if(system.player1.cards[i].Length == 3)
+            {
+                cardIntInArray += 9;
+            }
+            else
+            {
+                cardIntInArray += Convert.ToInt32(system.player1.cards[i][0]) - 1 - 48;
+            }
+            card[i].GetComponent<card>().number = cardIntInArray;
             switch (system.player1.cards[i][1])
             {
                 case 'o':
@@ -47,17 +57,11 @@ public class playerCode : MonoBehaviour
                     cardIntInArray += 30;
                     break;
             }
-            if(system.player1.cards[i].Length == 3)
-            {
-                cardIntInArray += 9;
-            }
-            else
-            {
-                cardIntInArray += Convert.ToInt32(system.player1.cards[i][0]) - 1 - 48;
-            }
+            
             
 
             card[i].sprite = deck[cardIntInArray];
+            
             
         }
         yield return null;

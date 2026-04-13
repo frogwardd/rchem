@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 
 public class sys : MonoBehaviour
 {
@@ -12,6 +11,8 @@ public class sys : MonoBehaviour
                             ,"1b" ,"2b" ,"3b" ,"4b" ,"5b" ,"6b" ,"7b" ,"8b" ,"9b" ,"10b"};
 
     public List<string> shuffled;
+    public GameObject selected_card;
+    public Transform[] onTable;
     [SerializeField] deckAnim deckAnim;
     public class player
     {
@@ -49,7 +50,23 @@ public class sys : MonoBehaviour
     IEnumerator StartGame()
     {
        // yield return new WaitUntil(() => player1.isHere && player2.isHere);
-
+        StartCoroutine(distribute());
+        int cardRef = 0;
+        /*while(cardRef < 4)
+        {
+            player1.cards[cardRef] = shuffled[0];
+            shuffled.RemoveAt(0);
+            cardRef++;
+            yield return null;
+        }*/
+        yield return null;
+    }
+    IEnumerator turn()
+    {
+        yield return null;
+    }
+    IEnumerator distribute()
+    {
         int cardRef = 0;
         while(cardRef < 3)
         {
@@ -60,6 +77,8 @@ public class sys : MonoBehaviour
             cardRef++;
             yield return null;
         }
+
         StartCoroutine(deckAnim.animPlayers());
     }
+    
 }

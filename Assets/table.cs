@@ -1,10 +1,8 @@
 using UnityEngine;
 
-public class CPU : MonoBehaviour
+public class table : MonoBehaviour
 {
-    [SerializeField] sys system;
-    public SpriteRenderer[] card;
-    public Transform[] cardTransform;
+    [SerializeField] sys sys;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,5 +13,12 @@ public class CPU : MonoBehaviour
     void Update()
     {
         
+    }
+    void OnMouseOver()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            sys.selected_card.transform.position = transform.position;
+        }
     }
 }
